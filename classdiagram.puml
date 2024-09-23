@@ -1,0 +1,78 @@
+@startuml De Friet shop
+
+skinparam ClassAttributeIconSize 0
+skinparam PackageStyle rectangle 
+
+
+package De_Friet_Tent{
+    class Customer{
+        +Id : int
+        +Firstname : string
+        +Lastname : string
+        +Phonenumber : string
+        +Emailaddress : string
+        +Address : string
+        +Orders : list<Order>
+
+        +changeinfo()
+
+    }
+
+    class Employee{
+        +Id : int
+        +Firstname : string
+        +Lastname : string
+        +Phonenumber : string
+        +Emailaddress : string
+        +Address : string 
+
+        +changecustomerinfo()
+        +changeemployeeinfo()
+    }
+
+    class Owner{
+
+    }
+
+    class Product{
+        +Id : int
+        +Name : string
+        +Price : Decimal
+        +CategoryId
+        +Category : Category
+
+
+        +changeprice()
+        +addprice()
+        +removeprice()
+        +addsale()
+
+    }
+
+    class Order{
+        Id : int
+        CustomerId : int
+        Customer : Customer
+        Products : list<Product>
+        +status : string
+        +Totalprice : Decimal
+
+        +addorder()
+        +deleteorder()
+        +changeorder()
+        +calculateTotalprice()
+
+    }
+
+    class Category{
+        Id : int
+        Name : string
+    }
+
+    Owner --|> Employee
+    Customer "1" -- "0..*" Order
+    Employee "1" -- "0..*" Customer
+    Category "1" -- "1..*" Product
+    Product "1..*" -- "0..*" Order
+}
+@enduml
