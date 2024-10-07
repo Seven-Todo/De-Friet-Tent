@@ -1,4 +1,4 @@
-﻿@model De_Friet_Tent.Models.Order
+﻿@model De_Friet_Tent.Models.OrderProductViewModel
 
 @{
     ViewData["Title"] = "Edit";
@@ -12,25 +12,33 @@
     <div class="col-md-4">
         <form asp-action="Edit">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <input type="hidden" asp-for="Id" />
+            <input type="hidden" asp-for="Order.Id" />
             <div class="form-group">
-                <label asp-for="CustomerId" class="control-label"></label>
-                <select asp-for="CustomerId" class="form-control" asp-items="ViewBag.CustomerId"></select>
-                <span asp-validation-for="CustomerId" class="text-danger"></span>
+                <label asp-for="Order.CustomerId" class="control-label"></label>
+                <select asp-for="Order.CustomerId" class="form-control" asp-items="ViewBag.CustomerId"></select>
+                <span asp-validation-for="Order.CustomerId" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="Status" class="control-label"></label>
-                <input asp-for="Status" class="form-control" />
-                <span asp-validation-for="Status" class="text-danger"></span>
+                <label asp-for="Order.Status" class="control-label"></label>
+                <input asp-for="Order.Status" class="form-control" />
+                <span asp-validation-for="Order.Status" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="Totalprice" class="control-label"></label>
-                <input asp-for="Totalprice" class="form-control" />
-                <span asp-validation-for="Totalprice" class="text-danger"></span>
+                <label asp-for="Order.Totalprice" class="control-label"></label>
+                <input asp-for="Order.Totalprice" class="form-control" />
+                <span asp-validation-for="Order.Totalprice" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Order.Products" class="control-label"></label>
+                @Html.ListBoxFor(m => m.SelectedProducts,
+                         new MultiSelectList(Model.Products, "Id", "Name", Model.SelectedProducts),
+                         new { @class = "form-control" }
+                         )
             </div>
             <div class="form-group">
                 <input type="submit" value="Save" class="btn btn-primary" />
             </div>
+
         </form>
     </div>
 </div>

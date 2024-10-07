@@ -42,6 +42,30 @@
         </dd>
     </dl>
 </div>
+<div class="row">
+    <h4>Bestellingen van deze klant</h4>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>
+                    Bestellingnummer
+                </th>
+                <th>
+                    Status
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model.Orders)
+            {
+                <tr>
+                    <td>@Html.DisplayFor(modelitem => item.Id)</td>
+                    <td>@Html.DisplayFor(modelitem => item.Status)</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
 <div>
     <a asp-action="Edit" asp-route-id="@Model?.Id">Edit</a> |
     <a asp-action="Index">Back to List</a>

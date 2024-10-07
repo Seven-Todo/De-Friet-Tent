@@ -37,10 +37,9 @@ package De_Friet_Tent{
     class Product{
         +Id : int
         +Name : string
-        +Price : Decimal
+        +Price : double
         +CategoryId
         +Category : Category
-
 
         +changeprice()
         +addprice()
@@ -50,28 +49,28 @@ package De_Friet_Tent{
     }
 
     class Order{
-        Id : int
-        CustomerId : int
-        Customer : Customer
-        Products : list<Product>
+        +Id : int
+        +CustomerId : int
+        +Customer : Customer
+        +Products : list<Product>
         +status : string
-        +Totalprice : Decimal
+        +Totalprice : double
 
-        +addorder()
-        +deleteorder()
+        +placeorder()
+        +cancelorder()
         +changeorder()
         +calculateTotalprice()
 
     }
 
     class Category{
-        Id : int
-        Name : string
+        +Id : int
+        +Name : string
     }
 
     Owner --|> Employee
     Customer "1" -- "0..*" Order
-    Employee "1" -- "0..*" Customer
+    Employee "1" -- "0..*" Order
     Category "1" -- "1..*" Product
     Product "1..*" -- "0..*" Order
 }

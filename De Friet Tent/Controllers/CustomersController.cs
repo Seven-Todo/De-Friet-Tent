@@ -34,6 +34,7 @@ namespace De_Friet_Tent.Controllers
             }
 
             var customer = await _context.Customer
+                .Include(c => c.Orders)
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (customer == null)
             {

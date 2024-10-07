@@ -10,9 +10,9 @@ namespace De_Friet_Tent.Models
     {
         public int Id { get; set; }
         public int CustomerId { get; set; }
-        public Customer Customer { get; set; }
-        public List<Product> Products { get; set; }
-        public string Status { get; set; }
+        public Customer? Customer { get; set; }
+        public List<Product>? Products { get; set; }
+        public string? Status { get; set; }
         public double Totalprice { get; set; }
     }
 }

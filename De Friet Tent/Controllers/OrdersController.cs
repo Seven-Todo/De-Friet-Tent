@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using De_Friet_Tent.DB;
 using De_Friet_Tent.Models;
+using Microsoft.EntityFrameworkCore.Metadata.Internal;
 
 namespace De_Friet_Tent.Controllers
 {
@@ -36,6 +37,7 @@ namespace De_Friet_Tent.Controllers
 
             var order = await _context.Order
                 .Include(o => o.Customer)
+                .Include(p => p.Products)
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (order == null)
             {
@@ -48,7 +50,11 @@ namespace De_Friet_Tent.Controllers
         // GET: Orders/Create
         public IActionResult Create()
         {
-            ViewData["CustomerId"] = new SelectList(_context.Customer, "Id", "Id");
+            ViewData["CustomerId"] = new SelectList(_context.Customer, "Id", "Lastname");
+
+            var products = _context.Product.ToList();
+
+            ViewData["Products"] = products;
             return View();
         }
 
@@ -82,8 +88,23 @@ namespace De_Friet_Tent.Controllers
             {
                 return NotFound();
             }
-            ViewData["CustomerId"] = new SelectList(_context.Customer, "Id", "Id", order.CustomerId);
-            return View(order);
+            ViewData["CustomerId"] = new SelectList(_context.Customer, "Id", "Lastname", order.CustomerId);
+            var products = await _context.Product.ToListAsync();
+            var selectedProducts = new List<int>();
+
+            if (order.Products != null)
+            {
+                selectedProducts = order.Products.Select(x => x.Id).ToList();
+            }
+
+            OrderProductViewModel orderproduct = new OrderProductViewModel()
+            {
+                Order = order,
+                SelectedProducts = selectedProducts,
+                Products = products
+            };
+
+            return View(orderproduct);
         }
 
         // POST: Orders/Edit/5
@@ -91,35 +112,53 @@ namespace De_Friet_Tent.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,CustomerId,Status,Totalprice")] Order order)
+        public async Task<IActionResult> Edit(OrderProductViewModel model)
         {
-            if (id != order.Id)
+            if (!ModelState.IsValid)
             {
                 return NotFound();
             }
 
-            if (ModelState.IsValid)
+            var existingorder = await _context.Order
+                .Include(o => o.Customer)
+                .Include(p => p.Products)
+                .FirstOrDefaultAsync(m => m.Id == model.Order.Id);
+
+            if (existingorder == null)
             {
-                try
-                {
-                    _context.Update(order);
-                    await _context.SaveChangesAsync();
-                }
-                catch (DbUpdateConcurrencyException)
-                {
-                    if (!OrderExists(order.Id))
-                    {
-                        return NotFound();
-                    }
-                    else
-                    {
-                        throw;
-                    }
-                }
-                return RedirectToAction(nameof(Index));
+                return NotFound();
             }
-            ViewData["CustomerId"] = new SelectList(_context.Customer, "Id", "Id", order.CustomerId);
-            return View(order);
+
+            if (model.SelectedProducts != null)
+            {
+                if (existingorder.Products == null)
+                {
+                    existingorder.Products = new List<Product>();
+                }
+
+                existingorder.Products.Clear();
+
+                foreach (var productId in model.SelectedProducts)
+                {
+                    var product = await _context.Product
+                        .FirstOrDefaultAsync(p => p.Id == productId);
+
+                    if (product != null)
+                    {
+                        existingorder.Products.Add(product);
+                    }
+                        
+                }
+
+            }
+
+            _context.Entry(existingorder).CurrentValues.SetValues(model.Order);
+            await _context.SaveChangesAsync();
+            var products = await _context.Product.ToListAsync();
+            model.Products = products;
+
+            ViewData["CustomerId"] = new SelectList(_context.Customer, "Id", "Id", existingorder.CustomerId);
+            return RedirectToAction(nameof(Index));
         }
 
         // GET: Orders/Delete/5

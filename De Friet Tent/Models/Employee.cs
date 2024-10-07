@@ -15,6 +15,8 @@ namespace De_Friet_Tent.Models
         public string Emailaddress { get; set; } = null!;
         public string Address { get; set; } = null!;
 
+        public List<Order>? Orders { get; set; }
+
 
         //public Employee(int id, string firstname, string lastname, string phonenumber, string emailaddress, string address, string occupation)
         //{

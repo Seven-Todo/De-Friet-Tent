@@ -48,7 +48,7 @@ namespace De_Friet_Tent.Controllers
         // GET: Products/Create
         public IActionResult Create()
         {
-            ViewData["categoryId"] = new SelectList(_context.Category, "Id", "Id");
+            ViewData["CategoryId"] = new SelectList(_context.Category, "Id", "Name");
             return View();
         }
 
@@ -57,7 +57,7 @@ namespace De_Friet_Tent.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Name,Price,Amount,categoryId")] Product product)
+        public async Task<IActionResult> Create([Bind("Id,Name,Price,Amount,CategoryId")] Product product)
         {
             if (ModelState.IsValid)
             {
@@ -65,7 +65,7 @@ namespace De_Friet_Tent.Controllers
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["categoryId"] = new SelectList(_context.Category, "Id", "Id", product.categoryId);
+            ViewData["CategoryId"] = new SelectList(_context.Category, "Id", "Id", product.CategoryId);
             return View(product);
         }
 
@@ -82,7 +82,7 @@ namespace De_Friet_Tent.Controllers
             {
                 return NotFound();
             }
-            ViewData["categoryId"] = new SelectList(_context.Category, "Id", "Id", product.categoryId);
+            ViewData["CategoryId"] = new SelectList(_context.Category, "Id", "Name", product.CategoryId);
             return View(product);
         }
 
@@ -91,7 +91,7 @@ namespace De_Friet_Tent.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Name,Price,Amount,categoryId")] Product product)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,Name,Price,Amount,CategoryId")] Product product)
         {
             if (id != product.Id)
             {
@@ -118,7 +118,7 @@ namespace De_Friet_Tent.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["categoryId"] = new SelectList(_context.Category, "Id", "Id", product.categoryId);
+            ViewData["CategoryId"] = new SelectList(_context.Category, "Id", "Id", product.CategoryId);
             return View(product);
         }
 

@@ -64,7 +64,7 @@ namespace De_Friet_Tent.DB
                 Name = "Kaas",
                 Price = 4.56,
                 Amount = 17,
-                categoryId = 1,
+                CategoryId = 1,
 
 
             };

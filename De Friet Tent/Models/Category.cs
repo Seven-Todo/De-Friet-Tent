@@ -10,14 +10,14 @@ namespace De_Friet_Tent.Models
     public class Category
     {
         public int Id { get; set; }
-        public string Name { get; set; }
+        public string? Name { get; set; }
 
         public Category()
         {
             Product product = new Product();
         }
 
-        public IList<Product> Product { get; set; }
+        public IList<Product>? Product { get; set; }
 
 
     }

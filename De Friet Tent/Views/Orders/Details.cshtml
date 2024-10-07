@@ -14,7 +14,7 @@
             @Html.DisplayNameFor(model => model.Customer)
         </dt>
         <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Customer.Id)
+            @Html.DisplayFor(model => model.Customer.Lastname)
         </dd>
         <dt class = "col-sm-2">
             @Html.DisplayNameFor(model => model.Status)
@@ -29,6 +29,26 @@
             @Html.DisplayFor(model => model.Totalprice)
         </dd>
     </dl>
+</div>
+<div class="row">
+    <h4>Producten in deze bestelling</h4>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>
+                    Product
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model.Products)
+            {
+                <tr>
+                    <td>@Html.DisplayFor(modelitem => item.Name)</td>
+                </tr>
+            }
+        </tbody>
+    </table>
 </div>
 <div>
     <a asp-action="Edit" asp-route-id="@Model?.Id">Edit</a> |
