@@ -20,7 +20,7 @@
             @Html.DisplayNameFor(model => model.Status)
         </dt>
         <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Status)
+            @Html.DisplayFor(model => model.Status.Name)
         </dd>
         <dt class = "col-sm-2">
             @Html.DisplayNameFor(model => model.Totalprice)
@@ -36,15 +36,16 @@
         <thead>
             <tr>
                 <th>
-                    Product
+                    Productnaam
                 </th>
             </tr>
         </thead>
+
         <tbody>
             @foreach (var item in Model.Products)
             {
                 <tr>
-                    <td>@Html.DisplayFor(modelitem => item.Name)</td>
+                    <td>@Html.DisplayFor(modelItem => item.Name)</td>
                 </tr>
             }
         </tbody>

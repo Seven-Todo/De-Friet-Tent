@@ -12,7 +12,8 @@ namespace De_Friet_Tent.Models
         public int CustomerId { get; set; }
         public Customer? Customer { get; set; }
         public List<Product>? Products { get; set; }
-        public string? Status { get; set; }
-        public double Totalprice { get; set; }
+        public Status? Status { get; set; }
+        public int StatusId { get; set; }
+        public decimal Totalprice { get; set; }
     }
 }

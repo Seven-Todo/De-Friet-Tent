@@ -15,6 +15,8 @@ namespace De_Friet_Tent.DB
         public DbSet<Employee> Employee { get; set; }
         public DbSet<Customer> Customer { get; set; }
         public DbSet<Owner> Owner { get; set; }
+        public DbSet<Order> Orders { get; set; }
+        public DbSet<Status> Status { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
@@ -62,7 +64,7 @@ namespace De_Friet_Tent.DB
             {
                 Id = 1,
                 Name = "Kaas",
-                Price = 4.56,
+                Price = 4.56m,
                 Amount = 17,
                 CategoryId = 1,
 

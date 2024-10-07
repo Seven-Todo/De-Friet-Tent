@@ -1,12 +1,10 @@
 ﻿@model IEnumerable<De_Friet_Tent.Models.Order>
 
 @{
-    ViewData["Title"] = "Bestellingen";
+    ViewData["Title"] = "Index";
 }
 
-<div class="text-center">
-    <h1>Bestellingen</h1>
-</div>
+<h1>Index</h1>
 
 <p>
     <a asp-action="Create">Create New</a>
@@ -33,7 +31,7 @@
                 @Html.DisplayFor(modelItem => item.Customer.Lastname)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.Status)
+                @Html.DisplayFor(modelItem => item.Status.Name)
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.Totalprice)

@@ -145,17 +145,19 @@ namespace De_Friet_Tent.Migrations
                     b.Property<int?>("EmployeeId")
                         .HasColumnType("int");
 
-                    b.Property<string>("Status")
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<int>("StatusId")
+                        .HasColumnType("int");
 
-                    b.Property<double>("Totalprice")
-                        .HasColumnType("float");
+                    b.Property<decimal>("Totalprice")
+                        .HasColumnType("decimal(18,2)");
 
                     b.HasKey("Id");
 
                     b.HasIndex("CustomerId");
 
                     b.HasIndex("EmployeeId");
+
+                    b.HasIndex("StatusId");
 
                     b.ToTable("Order");
                 });
@@ -174,13 +176,16 @@ namespace De_Friet_Tent.Migrations
                     b.Property<int>("CategoryId")
                         .HasColumnType("int");
 
+                    b.Property<string>("Imagename")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasMaxLength(30)
                         .HasColumnType("nvarchar(30)");
 
-                    b.Property<double>("Price")
-                        .HasColumnType("float");
+                    b.Property<decimal>("Price")
+                        .HasColumnType("decimal(18,2)");
 
                     b.HasKey("Id");
 
@@ -195,8 +200,24 @@ namespace De_Friet_Tent.Migrations
                             Amount = 17,
                             CategoryId = 1,
                             Name = "Kaas",
-                            Price = 4.5599999999999996
+                            Price = 4.56m
                         });
+                });
+
+            modelBuilder.Entity("De_Friet_Tent.Models.Status", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Name")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Status");
                 });
 
             modelBuilder.Entity("OrderProduct", b =>
@@ -244,7 +265,15 @@ namespace De_Friet_Tent.Migrations
                         .WithMany("Orders")
                         .HasForeignKey("EmployeeId");
 
+                    b.HasOne("De_Friet_Tent.Models.Status", "Status")
+                        .WithMany("Orders")
+                        .HasForeignKey("StatusId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.Navigation("Customer");
+
+                    b.Navigation("Status");
                 });
 
             modelBuilder.Entity("De_Friet_Tent.Models.Product", b =>
@@ -284,6 +313,11 @@ namespace De_Friet_Tent.Migrations
                 });
 
             modelBuilder.Entity("De_Friet_Tent.Models.Employee", b =>
+                {
+                    b.Navigation("Orders");
+                });
+
+            modelBuilder.Entity("De_Friet_Tent.Models.Status", b =>
                 {
                     b.Navigation("Orders");
                 });

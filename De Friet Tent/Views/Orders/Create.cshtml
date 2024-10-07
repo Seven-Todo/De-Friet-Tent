@@ -2,7 +2,6 @@
 
 @{
     ViewData["Title"] = "Create";
-    var products = ViewData["Products"] as List<De_Friet_Tent.Models.Product>;
 }
 
 <h1>Create</h1>
@@ -18,43 +17,14 @@
                 <select asp-for="CustomerId" class ="form-control" asp-items="ViewBag.CustomerId"></select>
             </div>
             <div class="form-group">
-                <label asp-for="Status" class="control-label"></label>
-                <input asp-for="Status" class="form-control" />
-                <span asp-validation-for="Status" class="text-danger"></span>
+                <label asp-for="StatusId" class="control-label"></label>
+                <select asp-for="StatusId" class ="form-control" asp-items="ViewBag.StatusId"></select>
             </div>
             <div class="form-group">
                 <label asp-for="Totalprice" class="control-label"></label>
                 <input asp-for="Totalprice" class="form-control" />
                 <span asp-validation-for="Totalprice" class="text-danger"></span>
             </div>
-                <table class="table">
-                    <thead>
-                        <tr>
-                            <th>
-                                Productnaam
-                            </th>
-                            <th>
-                                Prijs
-                            </th>
-                            <th>
-                                Aangevinkt
-                            </th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @foreach (var product in products)
-                        {
-                            <tr>
-                                <td>@product.Name</td>
-                                <td>@product.Price</td>
-                                <td>
-                                    <input type="checkbox" name="Producten" value="@product.Id" />
-                                </td>
-                            </tr>
-
-                        }
-                    </tbody>
-                </table>
             <div class="form-group">
                 <input type="submit" value="Create" class="btn btn-primary" />
             </div>

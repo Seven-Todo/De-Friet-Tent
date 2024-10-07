@@ -7,7 +7,6 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using De_Friet_Tent.DB;
 using De_Friet_Tent.Models;
-using Microsoft.EntityFrameworkCore.Metadata.Internal;
 
 namespace De_Friet_Tent.Controllers
 {
@@ -23,7 +22,7 @@ namespace De_Friet_Tent.Controllers
         // GET: Orders
         public async Task<IActionResult> Index()
         {
-            var friesshopdb = _context.Order.Include(o => o.Customer);
+            var friesshopdb = _context.Orders.Include(o => o.Customer).Include(o => o.Status);
             return View(await friesshopdb.ToListAsync());
         }
 
@@ -35,8 +34,9 @@ namespace De_Friet_Tent.Controllers
                 return NotFound();
             }
 
-            var order = await _context.Order
+            var order = await _context.Orders
                 .Include(o => o.Customer)
+                .Include(o => o.Status)
                 .Include(p => p.Products)
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (order == null)
@@ -50,7 +50,8 @@ namespace De_Friet_Tent.Controllers
         // GET: Orders/Create
         public IActionResult Create()
         {
-            ViewData["CustomerId"] = new SelectList(_context.Customer, "Id", "Lastname");
+            ViewData["CustomerId"] = new SelectList(_context.Customer, "Id", "Name");
+            ViewData["StatusId"] = new SelectList(_context.Status, "Id", "Name");
 
             var products = _context.Product.ToList();
 
@@ -63,7 +64,7 @@ namespace De_Friet_Tent.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,CustomerId,Status,Totalprice")] Order order)
+        public async Task<IActionResult> Create([Bind("Id,CustomerId,StatusId,Totalprice")] Order order)
         {
             if (ModelState.IsValid)
             {
@@ -72,6 +73,7 @@ namespace De_Friet_Tent.Controllers
                 return RedirectToAction(nameof(Index));
             }
             ViewData["CustomerId"] = new SelectList(_context.Customer, "Id", "Id", order.CustomerId);
+            ViewData["StatusId"] = new SelectList(_context.Status, "Id", "Id", order.StatusId);
             return View(order);
         }
 
@@ -89,6 +91,7 @@ namespace De_Friet_Tent.Controllers
                 return NotFound();
             }
             ViewData["CustomerId"] = new SelectList(_context.Customer, "Id", "Lastname", order.CustomerId);
+            ViewData["StatusId"] = new SelectList(_context.Status, "Id", "Name", order.StatusId);
             var products = await _context.Product.ToListAsync();
             var selectedProducts = new List<int>();
 
@@ -122,6 +125,7 @@ namespace De_Friet_Tent.Controllers
             var existingorder = await _context.Order
                 .Include(o => o.Customer)
                 .Include(p => p.Products)
+                .Include(o => o.Status)
                 .FirstOrDefaultAsync(m => m.Id == model.Order.Id);
 
             if (existingorder == null)
@@ -147,7 +151,7 @@ namespace De_Friet_Tent.Controllers
                     {
                         existingorder.Products.Add(product);
                     }
-                        
+
                 }
 
             }
@@ -169,8 +173,9 @@ namespace De_Friet_Tent.Controllers
                 return NotFound();
             }
 
-            var order = await _context.Order
+            var order = await _context.Orders
                 .Include(o => o.Customer)
+                .Include(o => o.Status)
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (order == null)
             {
@@ -185,10 +190,10 @@ namespace De_Friet_Tent.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var order = await _context.Order.FindAsync(id);
+            var order = await _context.Orders.FindAsync(id);
             if (order != null)
             {
-                _context.Order.Remove(order);
+                _context.Orders.Remove(order);
             }
 
             await _context.SaveChangesAsync();
@@ -197,7 +202,7 @@ namespace De_Friet_Tent.Controllers
 
         private bool OrderExists(int id)
         {
-            return _context.Order.Any(e => e.Id == id);
+            return _context.Orders.Any(e => e.Id == id);
         }
     }
 }

@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using De_Friet_Tent.DB;
 using De_Friet_Tent.Models;
+using Swashbuckle.AspNetCore.Annotations;
 
 namespace FrietAPI.Controllers
 {
@@ -22,7 +23,9 @@ namespace FrietAPI.Controllers
         }
 
         // GET: api/Customers
-        [HttpGet]
+        
+        [HttpGet(Name = "GetCustomers")]
+        [SwaggerOperation(Summary = "Haal alle klanten op")]
         public async Task<ActionResult<IEnumerable<Customer>>> GetCustomer()
         {
             return await _context.Customer.ToListAsync();
