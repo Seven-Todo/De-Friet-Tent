@@ -50,7 +50,7 @@ namespace De_Friet_Tent.Controllers
         // GET: Orders/Create
         public IActionResult Create()
         {
-            ViewData["CustomerId"] = new SelectList(_context.Customer, "Id", "Name");
+            ViewData["CustomerId"] = new SelectList(_context.Customer, "Id", "Lastname");
             ViewData["StatusId"] = new SelectList(_context.Status, "Id", "Name");
 
             var products = _context.Product.ToList();
