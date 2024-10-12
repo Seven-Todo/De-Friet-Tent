@@ -19,6 +19,49 @@ namespace De_Friet_Tent.Controllers
             _context = context;
         }
 
+        public IActionResult ChoiceOrderCustomer()
+        {
+            return View();
+        }
+
+        public IActionResult ChoiceOrderOwner()
+        {
+            return View();
+        }
+
+        public IActionResult ChoiceOrderEmployee()
+        {
+            return View();
+        }
+
+        public async Task<IActionResult> IndexCustomerDelete()
+        {
+            var friesshopdb = _context.Orders.Include(o => o.Customer).Include(o => o.Status);
+            return View(await friesshopdb.ToListAsync());
+        }
+
+        public async Task<IActionResult> IndexCustomer()
+        {
+            var friesshopdb = _context.Orders.Include(o => o.Customer).Include(o => o.Status);
+            return View(await friesshopdb.ToListAsync());
+        }
+        public async Task<IActionResult> IndexEmployee()
+        {
+            var friesshopdb = _context.Orders.Include(o => o.Customer).Include(o => o.Status);
+            return View(await friesshopdb.ToListAsync());
+        }
+        public async Task<IActionResult> IndexEmployeeDelete()
+        {
+            var friesshopdb = _context.Orders.Include(o => o.Customer).Include(o => o.Status);
+            return View(await friesshopdb.ToListAsync());
+        }
+        public async Task<IActionResult> IndexOwnerDelete()
+        {
+            var friesshopdb = _context.Orders.Include(o => o.Customer).Include(o => o.Status);
+            return View(await friesshopdb.ToListAsync());
+        }
+
+
         // GET: Orders
         public async Task<IActionResult> Index()
         {
@@ -47,6 +90,29 @@ namespace De_Friet_Tent.Controllers
             return View(order);
         }
 
+        public IActionResult CreateCustomer()
+        {
+            ViewData["CustomerId"] = new SelectList(_context.Customer, "Id", "Lastname");
+            ViewData["StatusId"] = new SelectList(_context.Status, "Id", "Name");
+
+            var products = _context.Product.ToList();
+
+            ViewData["Products"] = products;
+            return View();
+        }
+
+
+        public IActionResult CreateEmployee()
+        {
+            ViewData["CustomerId"] = new SelectList(_context.Customer, "Id", "Lastname");
+            ViewData["StatusId"] = new SelectList(_context.Status, "Id", "Name");
+
+            var products = _context.Product.ToList();
+
+            ViewData["Products"] = products;
+            return View();
+        }
+
         // GET: Orders/Create
         public IActionResult Create()
         {
@@ -72,8 +138,12 @@ namespace De_Friet_Tent.Controllers
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
+
             ViewData["CustomerId"] = new SelectList(_context.Customer, "Id", "Id", order.CustomerId);
             ViewData["StatusId"] = new SelectList(_context.Status, "Id", "Id", order.StatusId);
+            ViewData["Products"] = _context.Product.ToList();
+
+
             return View(order);
         }
 

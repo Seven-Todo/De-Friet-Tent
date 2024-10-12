@@ -1,0 +1,45 @@
+﻿@model IEnumerable<De_Friet_Tent.Models.ProductRevenueViewModel>
+
+@{
+    ViewData["Title"] = "RevenueOverview";
+}
+
+<div class="text-center">
+    <h1>Producten</h1>
+</div>
+
+
+<p>
+    <a asp-action="Create">Create</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+@*                 @Html.DisplayNameFor(model => model.Name) *@
+                   Product
+            </th>
+            <th>
+@*                 @Html.DisplayNameFor(model => model.Price) *@
+                   Prijs
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+@*                    @Html.DisplayFor(modelItem => item.Name) *@
+                       @item.ProductName
+                </td>
+                <td>
+                    @* @Html.DisplayFor(modelItem => item.Price) *@
+                    @item.Revenue
+                </td>
+
+            </tr>
+        }
+    </tbody>
+</table>
+

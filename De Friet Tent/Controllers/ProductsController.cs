@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using De_Friet_Tent.DB;
 using De_Friet_Tent.Models;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace De_Friet_Tent.Controllers
 {
@@ -24,6 +25,26 @@ namespace De_Friet_Tent.Controllers
         {
             var friesshopdb = _context.Product.Include(p => p.Category);
             return View(await friesshopdb.ToListAsync());
+        }
+
+        public async Task<IActionResult> RevenueOverview()
+        {
+            //data ophalen uit de database
+
+            var data = await _context.Orders
+            .Include(o => o.Products)
+            .SelectMany(o => o.Products)
+            .GroupBy(p => p.Name)
+            .Select(g => new ProductRevenueViewModel
+            {
+                ProductName = g.Key,
+                Revenue = g.Sum(p => p.Price)
+            }).ToListAsync();
+
+            //lijst maken met data in het viewmodel
+
+            //De view aanroepen
+            return View("RevenueOverview", data);
         }
 
         // GET: Products/Details/5
