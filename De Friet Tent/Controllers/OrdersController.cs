@@ -96,9 +96,18 @@ namespace De_Friet_Tent.Controllers
             ViewData["StatusId"] = new SelectList(_context.Status, "Id", "Name");
 
             var products = _context.Product.ToList();
-
             ViewData["Products"] = products;
-            return View();
+            var selectedProducts = new List<int>();
+
+
+            OrderProductViewModel orderproduct = new OrderProductViewModel()
+            {
+                Order = new Order(),
+                SelectedProducts = selectedProducts,
+                Products = products
+            };
+
+            return View(orderproduct);
         }
 
 
@@ -108,9 +117,18 @@ namespace De_Friet_Tent.Controllers
             ViewData["StatusId"] = new SelectList(_context.Status, "Id", "Name");
 
             var products = _context.Product.ToList();
-
             ViewData["Products"] = products;
-            return View();
+            var selectedProducts = new List<int>();
+
+
+            OrderProductViewModel orderproduct = new OrderProductViewModel()
+            {
+                Order = new Order(),
+                SelectedProducts = selectedProducts,
+                Products = products
+            };
+
+            return View(orderproduct);
         }
 
         // GET: Orders/Create
@@ -120,9 +138,18 @@ namespace De_Friet_Tent.Controllers
             ViewData["StatusId"] = new SelectList(_context.Status, "Id", "Name");
 
             var products = _context.Product.ToList();
-
             ViewData["Products"] = products;
-            return View();
+            var selectedProducts = new List<int>();
+
+
+            OrderProductViewModel orderproduct = new OrderProductViewModel()
+            {
+                Order = new Order(),
+                SelectedProducts = selectedProducts,
+                Products = products
+            };
+
+            return View(orderproduct);
         }
 
         // POST: Orders/Create
@@ -130,21 +157,47 @@ namespace De_Friet_Tent.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,CustomerId,StatusId,Totalprice")] Order order)
+        public async Task<IActionResult> Create(OrderProductViewModel model)
         {
             if (ModelState.IsValid)
             {
-                _context.Add(order);
+                
+                if (model.SelectedProducts != null)
+                {
+                    if (model.Order.Products == null)
+                    {
+                        model.Order.Products = new List<Product>();
+                    }
+
+                    model.Order.Products.Clear();
+
+                    foreach (var productId in model.SelectedProducts)
+                    {
+                        var product = await _context.Product
+                            .FirstOrDefaultAsync(p => p.Id == productId);
+
+                        if (product != null)
+                        {
+                            model.Order.Products.Add(product);
+                        }
+
+                    }
+
+                }
+
+                _context.Add(model.Order);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
 
-            ViewData["CustomerId"] = new SelectList(_context.Customer, "Id", "Id", order.CustomerId);
-            ViewData["StatusId"] = new SelectList(_context.Status, "Id", "Id", order.StatusId);
+
+
+            ViewData["CustomerId"] = new SelectList(_context.Customer, "Id", "Id", model.Order.CustomerId);
+            ViewData["StatusId"] = new SelectList(_context.Status, "Id", "Id", model.Order.StatusId);
             ViewData["Products"] = _context.Product.ToList();
 
 
-            return View(order);
+            return View(model);
         }
 
         // GET: Orders/Edit/5

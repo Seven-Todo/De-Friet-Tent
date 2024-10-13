@@ -7,9 +7,6 @@
 
 <h1>Index</h1>
 
-<p>
-    <a asp-action="Create">Create</a>
-</p>
 <table class="table">
     <thead>
         <tr>
@@ -39,6 +36,7 @@
                     @Html.DisplayFor(modelItem => item.Totalprice)
                 </td>
                 <td>
+                    <a asp-action="Details" asp-route-id="@item.Id" class="btn btn" style="background-color: aquamarine">Details</a> |
                     <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
                 </td>
             </tr>

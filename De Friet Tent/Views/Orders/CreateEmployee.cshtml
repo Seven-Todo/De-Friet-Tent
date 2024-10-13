@@ -27,29 +27,13 @@
                 <input asp-for="Order.Totalprice" class="form-control" type="number" step="0.01" />
                 <span asp-validation-for="Order.Totalprice" class="text-danger"></span>
             </div>
-             <div class="form-group">
-                 <table class="table">
-                     <thead>
-                         <tr>
-                             <th>Select</th>
-                             <th>Productnaam</th>
-                             <th>Prijs</th>
-                         </tr>
-                     </thead>
-                     <tbody>
-                         @foreach (var product in products)
-                         {
-                             <tr>
-                                 <td>
-                                    <input type="checkbox" class="form-check-input" name="Products" value="@product.Id" />
-                                 </td>
-                                 <td>@product.Name</td>
-                                 <td>@product.Price</td>
-                             </tr>
-                         }
-                     </tbody>
-                 </table>
-             </div>
+            <div class="form-group">
+                <label asp-for="Order.Products" class="control-label"></label>
+                @Html.ListBoxFor(m => m.SelectedProducts,
+                         new MultiSelectList(Model.Products, "Id", "Name", Model.SelectedProducts),
+                         new { @class = "form-control" }
+                         )
+            </div>
             <div class="form-group">
                 <input type="submit" value="Create" class="btn btn-primary" />
             </div>

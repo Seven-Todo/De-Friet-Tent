@@ -6,8 +6,18 @@
 
 <h1>Index</h1>
 
+<div class="dropdown">
+    <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
+        Status
+    </button>
+    <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+        <li><a class="dropdown-item" href="#" data-status="Klaar">Klaar</a></li>
+        <li><a class="dropdown-item" href="#" data-status="Wordt bereid">Wordt bereid</a></li>
+        <li><a class="dropdown-item" href="#" data-status="Geannuleerd">Geannuleerd</a></li>
+    </ul>
+</div>
 
-<table class="table">
+<table class="table" id="MyTable">
     <thead>
         <tr>
             <th>
@@ -35,10 +45,14 @@
                 @Html.DisplayFor(modelItem => item.Totalprice)
             </td>
             <td>
+                <a asp-action="Details" asp-route-id="@item.Id" class="btn btn" style="background-color: aquamarine">Details</a> |
                 <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> 
 
             </td>
         </tr>
 }
     </tbody>
+
 </table>
+
+
