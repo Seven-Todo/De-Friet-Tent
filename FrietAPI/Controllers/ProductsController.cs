@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using De_Friet_Tent.DB;
 using De_Friet_Tent.Models;
+using Swashbuckle.AspNetCore.Annotations;
 
 namespace FrietAPI.Controllers
 {
@@ -23,6 +24,7 @@ namespace FrietAPI.Controllers
 
         // GET: api/Products
         [HttpGet]
+        [SwaggerOperation(Summary = "Haal alle producten op.")]
         public async Task<ActionResult<IEnumerable<Product>>> GetProduct()
         {
             return await _context.Product.ToListAsync();
@@ -30,6 +32,7 @@ namespace FrietAPI.Controllers
 
         // GET: api/Products/5
         [HttpGet("{id}")]
+        [SwaggerOperation(Summary = "Haal een specifiek product op via Id.")]
         public async Task<ActionResult<Product>> GetProduct(int id)
         {
             var product = await _context.Product.FindAsync(id);
@@ -45,6 +48,7 @@ namespace FrietAPI.Controllers
         // PUT: api/Products/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
+        [SwaggerOperation(Summary = "Verander product gegevens via Id.")]
         public async Task<IActionResult> PutProduct(int id, Product product)
         {
             if (id != product.Id)
@@ -76,6 +80,7 @@ namespace FrietAPI.Controllers
         // POST: api/Products
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
+        [SwaggerOperation(Summary = "Product gegevens aanmaken en opslaan.")]
         public async Task<ActionResult<Product>> PostProduct(Product product)
         {
             _context.Product.Add(product);
@@ -86,6 +91,7 @@ namespace FrietAPI.Controllers
 
         // DELETE: api/Products/5
         [HttpDelete("{id}")]
+        [SwaggerOperation(Summary = "Verwijder een product via Id.")]
         public async Task<IActionResult> DeleteProduct(int id)
         {
             var product = await _context.Product.FindAsync(id);

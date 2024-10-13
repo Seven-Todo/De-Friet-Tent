@@ -33,6 +33,7 @@ namespace FrietAPI.Controllers
 
         // GET: api/Customers/5
         [HttpGet("{id}")]
+        [SwaggerOperation(Summary = "Haal een specifieke klant op via Id")]
         public async Task<ActionResult<Customer>> GetCustomer(int id)
         {
             var customer = await _context.Customer.FindAsync(id);
@@ -48,6 +49,7 @@ namespace FrietAPI.Controllers
         // PUT: api/Customers/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
+        [SwaggerOperation(Summary = "Verander klant gegevens via een Id.")]
         public async Task<IActionResult> PutCustomer(int id, Customer customer)
         {
             if (id != customer.Id)
@@ -79,6 +81,7 @@ namespace FrietAPI.Controllers
         // POST: api/Customers
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
+        [SwaggerOperation(Summary = "Klant gegevens aanmaken en opslaan.")]
         public async Task<ActionResult<Customer>> PostCustomer(Customer customer)
         {
             _context.Customer.Add(customer);
@@ -89,6 +92,7 @@ namespace FrietAPI.Controllers
 
         // DELETE: api/Customers/5
         [HttpDelete("{id}")]
+        [SwaggerOperation(Summary = "Verwijder een klant via Id.")]
         public async Task<IActionResult> DeleteCustomer(int id)
         {
             var customer = await _context.Customer.FindAsync(id);
